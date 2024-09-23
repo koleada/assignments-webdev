@@ -397,5 +397,21 @@
         </div>
     </div>
   </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    // gives us all the built in vue functions and variables
+    
+    const { createApp, ref } = Vue
+    // createApp returns our "view model"
+    createApp({
+      setup() {
+        const message = ref('Hello vue!')
+        return {
+          message
+        }
+      }
+    // pass in a css selector pointing to an html element on our page to "mount" our view model on. 
+    }).mount('#app')
+  </script>
 </body>
 </html>
