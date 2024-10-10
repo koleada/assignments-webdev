@@ -10,7 +10,7 @@
           </div>
         <!-- Sign-up Box -->
         <div class="box" style="border: 1px solid #00d1b2; border-radius: 8px; padding: 1rem;">
-          <h1 class="title has-text-black">Sign Up</h1>
+          <h1 class="title" style="color: #8D9195;">Sign Up</h1>
 
           <form @submit.prevent="submitForm">
             <!-- Name Field -->

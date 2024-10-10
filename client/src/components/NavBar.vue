@@ -1,18 +1,29 @@
+<script lang="ts">
+import{ RouterLink } from 'vue-router';
+import { ref } from 'vue';
+
+  const isOpen = ref(false)
+
+
+</script>
 <template>
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a id='logoLink' class="navbar-item special left" href="/home">
+    <a id='logoLink' class="navbar-item special left" href="/">
       <i class="fas fa-dumbbell"></i>
     </a>
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <!-- the below nav burger is bound to view w/ the :class property so we can use vue to toggle it -->
+       <!-- we also use @click to add a click event listener so we can just added a function to this. in this case we just toggle isOpen -->
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" v-bind:class="{ 'is-active':isOpen }" 
+      @click="isOpen = !isOpen; console.log(isOpen)">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
     </a>
   </div>
-
-  <div id="navbarBasicExample" class="navbar-menu">
+  <!-- the vue binded class is used so we can alter the display of this vs the burger in vue -->
+  <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{ 'is-active': isOpen  }">
     <div class="navbar-start" >
 
       <a class="navbar-item special left">
@@ -65,6 +76,12 @@
     position: fixed;
     width: 100%;
     height: 7vh;
+    background-color: #8D9195;
+    font-weight: bold;
+    
+  }
+  .navbar-burger{
+    color: #090a0c;
   }
   #logoLink{
     display: flex;
@@ -93,11 +110,8 @@
      background-color: #00d1b2; /* Change background color on hover (using a Bulma color class) */
   }
   .navbar-item.left, .navbar-link.left{
-    width: 8vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+    
+    color: #090a0c;
   }
   
 </style>

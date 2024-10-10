@@ -13,11 +13,11 @@
         <!-- Login Box -->
         <div class="box" style="border: 2px solid #00d1b2; border-radius: 8px; padding: 2rem;">
           
-          <h5 class="title is-2 has-text-black" style="margin: 2vh;" >Login</h5>
+          <h5 class="title is-3 has-text-black" style="margin: 2vh; text-align: center; color: #8D9195;" >Login</h5>
           <form @submit.prevent="submitForm">
             <!-- Email Field -->
             <div class="field">
-              <label class="label has-text-white" >Email</label>
+              <label class="label has-text-black" >Email:</label>
               <div class="control">
                 <input 
                   class="input is-medium" 
@@ -31,7 +31,7 @@
 
             <!-- Password Field -->
             <div class="field">
-              <label class="label has-text-white">Password</label>
+              <label class="label has-text-black">Password:</label>
               <div class="control">
                 <input 
                   class="input is-medium" 
@@ -113,7 +113,6 @@
   align-items: center;
   justify-content: center;
   gap: 4vh;
-  max-height: 100vh;
 }
 .logo{
     margin-top: 4vh;
@@ -123,8 +122,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-around;
+  text-align: left
 }
 #successMessage{
   color: #00d1b2;
