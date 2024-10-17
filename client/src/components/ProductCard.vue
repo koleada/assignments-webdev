@@ -17,12 +17,11 @@ import type { Product } from '@/models/products';
 defineProps<{
     product: Product
 }>()
-
-
 </script>
 
 <style scoped>
     h3{
         font-weight: bold;
     }
+    
 </style>

@@ -1,4 +1,3 @@
-
 <template>
     <main>
     <section class="hero is-fullheight is-black">
@@ -10,15 +9,15 @@
           </div>
         <!-- Sign-up Box -->
         <div class="box" style="border: 1px solid #00d1b2; border-radius: 8px; padding: 1rem;">
-          <h1 class="title" style="color: #8D9195;">Sign Up</h1>
+          <h1 class="title" style="color: #090a0c;">Sign Up</h1>
 
           <form @submit.prevent="submitForm">
             <!-- Name Field -->
             <div class="field">
-              <label class="label has-text-white">Name</label>
+              <label class="label has-text-black">Name:</label>
               <div class="control">
                 <input 
-                  class="input is-medium" 
+                  class="input is-primary is-rounded" 
                   type="text" 
                   placeholder="Enter your name" 
                   v-model="name" 
@@ -28,10 +27,10 @@
 
             <!-- Email Field -->
             <div class="field">
-              <label class="label has-text-white">Email</label>
+              <label class="label has-text-black">Email:</label>
               <div class="control">
                 <input 
-                  class="input is-medium" 
+                  class="input is-primary is-rounded" 
                   type="email" 
                   placeholder="Enter your email" 
                   v-model="email" 
@@ -41,10 +40,10 @@
 
             <!-- Phone Number Field -->
             <div class="field">
-              <label class="label has-text-white">Phone Number</label>
+              <label class="label has-text-black">Phone Number:</label>
               <div class="control">
                 <input 
-                  class="input is-medium" 
+                  class="input is-primary is-rounded" 
                   type="tel" 
                   placeholder="Enter your phone number" 
                   v-model="phone" 
@@ -54,10 +53,10 @@
 
             <!-- Password Field -->
             <div class="field">
-              <label class="label has-text-white">Password</label>
+              <label class="label has-text-black">Password:</label>
               <div class="control">
                 <input 
-                  class="input is-medium" 
+                  class="input is-primary is-rounded" 
                   type="password" 
                   placeholder="Create a password" 
                   v-model="password" 
@@ -67,10 +66,10 @@
 
             <!-- Confirm Password Field -->
             <div class="field">
-              <label class="label has-text-white">Confirm Password</label>
+              <label class="label has-text-black">Confirm Password:</label>
               <div class="control">
                 <input 
-                  class="input is-medium" 
+                  class="input is-primary is-rounded" 
                   type="password" 
                   placeholder="Confirm your password" 
                   v-model="confirmPassword" 
@@ -84,8 +83,8 @@
             <div class="field mt-5">
               <div class="control">
                 <button 
-                  class="button is-medium is-fullwidth" 
-                  style="background-color: #00d1b2; color: white;" 
+                  class="button is-primary is-fullwidth" 
+                  style="background-color: #00d1b2; color: black;" 
                   type="submit">
                   Sign Up
                 </button>
@@ -107,7 +106,7 @@
   
   
 <script>
-   
+    import { routes } from 'vue-router/auto-routes'
     export default {
     data() {
         return {
@@ -158,7 +157,20 @@
     margin-bottom: 0!important;
   }
   .box {
-    max-width: 400px;
+    max-width: 40vw;
     width: 100%;
   }
-  </style>
+  form{
+    text-align: left;
+  }
+  label{
+    font-size: 1rem!important
+  }
+  form input{
+    height: 4vh;
+  }
+  ::placeholder {
+    color: black;
+    opacity: .8
+  }
+</style>

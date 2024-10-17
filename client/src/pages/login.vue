@@ -1,5 +1,3 @@
-
-
 <template>
   <section class="hero is-fullheight is-black">
     <div class="hero-body">
@@ -20,10 +18,11 @@
               <label class="label has-text-black" >Email:</label>
               <div class="control">
                 <input 
-                  class="input is-medium" 
+                  class="input is-medium is-primary is-rounded" 
                   type="email" 
                   placeholder="Enter your email" 
                   v-model="email" 
+                  
                   required>
                  
               </div>
@@ -34,7 +33,7 @@
               <label class="label has-text-black">Password:</label>
               <div class="control">
                 <input 
-                  class="input is-medium" 
+                  class="input is-medium is-primary is-rounded" 
                   type="password" 
                   placeholder="Enter your password" 
                   v-model="password" 
@@ -117,9 +116,10 @@
 .logo{
     margin-top: 4vh;
 }
+form input{
+  height: 5vh;
+}
 .box {
-  max-width: 25vw;
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -128,5 +128,9 @@
 #successMessage{
   color: #00d1b2;
   max-width: 40vw;
+}
+::placeholder {
+    color: black;
+    opacity: .8
 }
 </style>

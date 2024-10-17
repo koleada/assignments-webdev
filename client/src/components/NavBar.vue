@@ -2,8 +2,13 @@
 import{ RouterLink } from 'vue-router';
 import { ref } from 'vue';
 
-  const isOpen = ref(false)
-
+export default {
+   data: function() {
+       return {
+           isOpen: false
+       }
+   }
+}
 
 </script>
 <template>
@@ -14,8 +19,7 @@ import { ref } from 'vue';
     </a>
       <!-- the below nav burger is bound to view w/ the :class property so we can use vue to toggle it -->
        <!-- we also use @click to add a click event listener so we can just added a function to this. in this case we just toggle isOpen -->
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" 
-      :class="{ 'is-active': isOpen }" @click="isOpen = !isOpen">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" @click="isOpen = !isOpen" v-bind:class="{'is-active': isOpen}">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -23,14 +27,14 @@ import { ref } from 'vue';
     </a>
   </div>
   <!-- the vue binded class is used so we can alter the display of this vs the burger in vue -->
-  <div id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': isOpen }">
+  <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{'is-active': isOpen}">
     <div class="navbar-start" >
 
-      <a class="navbar-item special left">
+      <a class="navbar-item special left ">
         Documentation
       </a>
 
-      <div class="navbar-item has-dropdown is-hoverable left">
+      <div class="navbar-item has-dropdown  left">
         <a class="navbar-link left">
           More
         </a>
@@ -76,9 +80,9 @@ import { ref } from 'vue';
     position: fixed;
     width: 100%;
     height: 7vh;
+    max-height: 7vh;
     background-color: #8D9195;
     font-weight: bold;
-    
   }
   .navbar-burger{
     color: #090a0c;
@@ -87,6 +91,7 @@ import { ref } from 'vue';
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 7vh!important;
   }
   .fa-dumbbell{
     font-size: 1.8rem;
@@ -112,6 +117,9 @@ import { ref } from 'vue';
   .navbar-item.left, .navbar-link.left{
     
     color: #090a0c;
+    height: 100%!important;
   }
-  
+  .navbar-burger:hover{
+    background-color: #8D9195;
+  }
 </style>

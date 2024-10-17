@@ -12,12 +12,15 @@ import VueRouter from 'unplugin-vue-router/vite'
 export default defineConfig({
   plugins: [
     VueRouter({
-      // Options
+      /* options */
     }),
     vue(),
     vueJsx(),
     vueDevTools(),
   ],
+  server: {
+    hmr: false,
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
