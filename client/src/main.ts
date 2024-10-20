@@ -4,8 +4,9 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router'
+import router from './router/index';
 
+router.addRoute({ path: '/', component: () => import('./pages/index.vue') })
 const app = createApp(App)
 
 app.use(router)
