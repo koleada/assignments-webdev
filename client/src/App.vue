@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { routes } from 'vue-router/auto-routes'
 import NavBar from './components/NavBar.vue';
+
+
 </script>
 
 <template>
