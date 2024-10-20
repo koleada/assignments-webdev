@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+  
 </script>
 
 <template>
@@ -10,13 +10,12 @@
         <!-- Logo and Title -->
         <div class="mb-6">
           <i class="fas fa-dumbbell" style="font-size: 3rem; color: #00d1b2;"></i>
-          <h1 class="title has-text-white mt-3">Track Your Fitness Journey</h1>
-          <h2 class="subtitle has-text-white">Achieve your goals and stay motivated</h2>
+          <h1 class="title has-text-white mt-3 is-1">Track Your Fitness Journey</h1>
+          <h2 class="subtitle has-text-white is-3">Achieve your goals and stay motivated</h2>
         </div>
         
-        <!-- Hero Image Placeholder -->
         <!-- Add a relevant fitness image here -->
-        <img src="" alt="Fitness Image" style="border-radius: 8px; max-width: 100%; margin-bottom: 2rem;">
+        <img id='mainImg' src='../assets/mainImg.jpeg' alt="Fitness Image" style="border-radius: 8px; margin-bottom: 2rem;">
         
         <!-- Call-to-Action Button -->
         <a class="button is-large" style="background-color: #00d1b2; color: white;" href="/sign-up">
@@ -99,9 +98,14 @@ export default {
   align-items: center;
   text-align: center;
 }
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-img {
-  max-width: 100%;
+#mainImg {
+  max-width: 30%;
 }
 
 .box {

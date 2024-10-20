@@ -1,16 +1,4 @@
-<script lang="ts">
-import{ RouterLink } from 'vue-router';
-import { ref } from 'vue';
 
-export default {
-   data: function() {
-       return {
-           isOpen: false
-       }
-   }
-}
-
-</script>
 <template>
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
@@ -30,51 +18,121 @@ export default {
   <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{'is-active': isOpen}">
     <div class="navbar-start" >
 
-      <a class="navbar-item special left ">
-        Documentation
+      <div v-if="user.userId != -1">
+        <a class="navbar-item special left" href="/my-activity" >
+          My Activity
+        </a>
+      </div>
+
+      <a class="navbar-item special left" href="/all-activity">
+        All Activity
       </a>
 
-      <div class="navbar-item has-dropdown  left">
+      <div v-if="user.userId == 0">
+        <a class="navbar-item special left" href="/admin" >
+          Admin
+        </a>
+      </div>
+
+      <div class="navbar-item has-dropdown is-hoverable is-primary">
         <a class="navbar-link left">
           More
         </a>
 
-        <div class="navbar-dropdown ">
-          <a class="navbar-item ">
+        <div class="navbar-dropdown">
+          <a class="navbar-item">
             About
           </a>
-          <a class="navbar-item ">
+          <a class="navbar-item">
             Contact
           </a>
           <hr class="navbar-divider">
-          <a class="navbar-item ">
+          <a class="navbar-item">
             Report an issue
           </a>
         </div>
       </div>
+      
     </div>
 
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a class="button is-primary" id="signUp" href="/signup">
-            <strong>Sign up</strong>
-          </a>
-          <a class="button is-light" href="/login">
-            Log in
-          </a>
+    <div class="navbar-end"  >
+        <div class="navbar-item">
+          <div class="buttons" v-if="user.userId == -1">
+            <a class="button is-primary" id="signUp" href="/signup">
+              <strong>Sign up</strong>
+            </a>
+            <a class="button is-light" style="font-weight: bold;" href="/login">
+              Log in
+            </a>
+          </div>
+          <div class="buttons" v-else>
+            <div class="profile">
+              <img :src="user.profileImageUrl" alt="Profile Pic" class="image is-64x64">
+              <p>{{ user.username }}</p>
+            </div>
+            <button class="button is-light" 
+                    style="background-color: white; color: black;"
+                    type="submit" @click="logOut">
+                    Log Out
+            </button>
+          </div>
         </div>
-      </div>
     </div>
   </div>
 </nav>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+  import  { getUserById } from "@/models/users";
+  
+  export default {
+    
+    data() {
+        return {
+          user:  getUserById(-1), 
+          isOpen: false
+        };
+    },
+    methods: {
+      logOut(){
+        localStorage.removeItem('loggedInUserId');
+        this.user = getUserById(-1);
+        this.$router.push('/');
+      }, 
+      async getUserData(userId: number) {
+        try {
+          const user = await getUserById(userId);
+          this.user = user;
+          
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          this.user = getUserById(-1); // Handle potential errors
+        }
+      },
+    },
+    mounted() {
+      const id = localStorage.getItem('loggedInUserId');
 
+      if (id) {
+        const numId = parseInt(id);
+        this.getUserData(numId); // Call the new function
+      } else {
+        this.user = getUserById(-1);
+      }
+    },
+
+    
+  };
+  
+  
 </script>
 
 <style scoped>
+  .profile{
+    display: flex;
+    gap: 2vw;
+    margin-right: 2vw;
+  }
   .navbar{
     top: 100;
     position: fixed;
@@ -110,9 +168,13 @@ export default {
     color: white; /* Change text color on hover */
     background-color: #00d1b2; /* Change background color on hover (using a Bulma color class) */
   }
-  .special:hover {
-    color: white; /* Change text color on hover */
-     background-color: #00d1b2; /* Change background color on hover (using a Bulma color class) */
+  button:hover {
+    color: white!important; /* Change text color on hover */
+    background-color: #00d1b2!important; /* Change background color on hover (using a Bulma color class) */
+  }
+  .special:hover, .left:hover {
+    color: white!important; /* Change text color on hover */
+    background-color: #00d1b2; /* Change background color on hover (using a Bulma color class) */
   }
   .navbar-item.left, .navbar-link.left{
     
@@ -121,5 +183,8 @@ export default {
   }
   .navbar-burger:hover{
     background-color: #8D9195;
+  }
+  .navbar-dropdown{
+    background-color: white;
   }
 </style>

@@ -1,0 +1,81 @@
+{
+    "workouts": [
+    {
+      "id": 1,
+      "description": "Morning run",
+      "dateOfPosting": "2024-10-17",
+      "imageUrl": "https://runkeeper.com/cms/wp-content/uploads/sites/4/2022/12/Running-Image-12.jpg",
+      "distance": 3.5,
+      "type": "run",
+      "duration": 30,
+      "userId": 1,
+      "location": "New Paltz"
+    },
+    {
+        "id": 2,
+      "description": "Evening bike ride",
+      "dateOfPosting": "2024-10-16",
+      "imageUrl": "https://example.com/workout2.jpg",
+      "distance": 10,
+      "type": "bike",
+      "duration": 45,
+      "userId": 1,
+      "location": "China"
+    },
+    {
+        "id": 3,
+      "description": "Swimming workout",
+      "dateOfPosting": "2024-10-15",
+      "imageUrl": "https://example.com/workout3.jpg",
+      "distance": 0.5,
+      "type": "swim",
+      "duration": 20,
+      "userId": 2,
+      "location": "New York City"
+    },
+    {
+        "id": 4,
+      "description": "Weightlifting sessionas dddddddddddddddddddddddddddddddddddddddd ddddddddddddddddddd ddddddddddddddddddddddd ddddddddddddddd ddddddddddddd ddddddd dddddddsada",
+      "dateOfPosting": "2024-10-14",
+      "imageUrl": "https://i.insider.com/5810cce78b987d5d4df68dbf",
+      "distance": 0,
+      "type": "weights",
+      "duration": 40,
+      "userId": 2, 
+      "location": "Shanendoah"
+    },
+    {
+        "id": 5,
+      "description": "Hiking trail",
+      "dateOfPosting": "2024-10-13",
+      "imageUrl": "https://example.com/workout5.jpg",
+      "distance": 5,
+      "type": "hike",
+      "duration": 60,
+      "userId": 3, 
+      "location": "Acadia"
+    },
+    {
+        "id": 6,
+      "description": "Yoga class",
+      "dateOfPosting": "2024-10-12",
+      "imageUrl": "https://example.com/workout6.jpg",
+      "distance": 0,
+      "type": "yoga",
+      "duration": 45,
+      "userId": 3, 
+      "location": "Poughkeepsie"
+    },
+    {
+        "id": 7,
+      "description": "Walk through campus",
+      "dateOfPosting": "2024-10-17",
+      "imageUrl": "https://example.com/workout6.jpg",
+      "distance": 2,
+      "type": "walk",
+      "duration": 45,
+      "userId": 1, 
+      "location": "Poughkeepsie"
+    }
+  ]
+}

@@ -6,7 +6,7 @@
         <i class="fas fa-dumbbell logo" style="font-size: 3rem; color: #00d1b2;"></i>
         
         <div>
-          <div id="successMessage" class="subtitle is-5"></div>
+          <div id="error" class="subtitle is-5" v-if='errorMessage' style="color: red; font-size: 1rem;">{{ errorMessage }}</div>
         </div>
         <!-- Login Box -->
         <div class="box" style="border: 2px solid #00d1b2; border-radius: 8px; padding: 2rem;">
@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import { login } from '@/models/users'
     
     export default {
         props: ['message'],
@@ -74,14 +75,21 @@
             return {
             email: '',
             password: '',
-            
+            errorMessage: '',
             };
         },
         methods: {
             submitForm() {
             // Add your form submission logic here
-            console.log('Email:', this.email);
-            console.log('Password:', this.password);
+            const user = login(this.email, this.password)
+            
+            if(user){
+              localStorage.setItem('loggedInUserId', user.userId);
+              this.$router.push('/my-activity');
+            }
+            else{
+              this.errorMessage = 'Invalid email or password';
+            }
             localStorage.removeItem('email');
             localStorage.removeItem('sucess');
             }
