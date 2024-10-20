@@ -18,7 +18,7 @@
         <img id='mainImg' src='../assets/mainImg.jpeg' alt="Fitness Image" style="border-radius: 8px; margin-bottom: 2rem;">
         
         <!-- Call-to-Action Button -->
-        <a class="button is-large" style="background-color: #00d1b2; color: white;" href="/sign-up">
+        <a class="button is-large" style="background-color: #00d1b2; color: white;" href="/signup">
           Get Started Now
         </a>
       </div>
