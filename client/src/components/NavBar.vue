@@ -19,31 +19,30 @@
     <div class="navbar-start" >
 
       <div v-if="user.userId != -1">
-      <RouterLink class="navbar-item special left" href="/my-activity" >
+        <a class="navbar-item special left" href="/my-activity" >
           My Activity
-        </RouterLink>
+        </a>
       </div>
 
-      <RouterLink class="navbar-item special left" href="/all-activity">
+      <a class="navbar-item special left" href="/all-activity">
         All Activity
-      </RouterLink>
+      </a>
 
       <div v-if="user.userId == 0">
-        <RouterLink class="navbar-item special left" href="/admin" >
+        <a class="navbar-item special left" href="/admin" >
           Admin
-        </RouterLink>
+        </a>
       </div>
 
       <div class="navbar-item has-dropdown is-hoverable is-primary">
-        <RouterLink class="navbar-link left">
+        <a class="navbar-link left">
           More
-        </RouterLink>
-        </div>
+        </a>
+
         <div class="navbar-dropdown">
-          <RouterLink to="/about" class="navbar-item">
-                About
-            </RouterLink>
-          </div>
+          <a class="navbar-item">
+            About
+          </a>
           <a class="navbar-item">
             Contact
           </a>
@@ -54,6 +53,7 @@
         </div>
       </div>
       
+    </div>
 
     <div class="navbar-end"  >
         <div class="navbar-item">
@@ -78,6 +78,7 @@
           </div>
         </div>
     </div>
+  </div>
 </nav>
 </template>
 
