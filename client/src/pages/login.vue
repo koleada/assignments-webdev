@@ -85,7 +85,9 @@ import { login } from '@/models/users'
             
             if(user){
               localStorage.setItem('loggedInUserId', user.userId);
-              this.$router.push('/my-activity');
+              this.$router.push('/my-activity').then(() => {
+                window.location.reload();
+              });
             }
             else{
               this.errorMessage = 'Invalid email or password';
