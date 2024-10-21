@@ -133,17 +133,23 @@
     gap: 2vw;
     margin-right: 2vw;
   }
-  .navbar{
+  .navbar {
     top: 100;
     position: fixed;
     width: 100%;
-    height: 7vh;
-    max-height: 7vh;
+    height: 7vh!important;
+    max-height: 7vh!important;
     background-color: #8D9195;
     font-weight: bold;
   }
+  .navbar-brand{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   .navbar-burger{
     color: #090a0c;
+    height: 7vh!important;
   }
   #logoLink{
     display: flex;
@@ -153,7 +159,9 @@
   }
   .fa-dumbbell{
     font-size: 1.8rem;
+
   }
+  
   a.navbar-link::after {
     border-color: #00d1b2!important /* Change to your desired color */
   }
@@ -187,4 +195,5 @@
   .navbar-dropdown{
     background-color: white;
   }
+ 
 </style>

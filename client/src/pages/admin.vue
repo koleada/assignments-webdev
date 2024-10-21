@@ -63,7 +63,7 @@
     export default {
         data() {
             return {
-                users: getAll().data,
+                users: ref<User[]>(getAll().data),
                 showForm: false
             };
         },
@@ -85,7 +85,6 @@
         },
         
     };
-    
 </script>
 
 <style scoped>

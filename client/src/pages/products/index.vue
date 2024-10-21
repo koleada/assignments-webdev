@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { getAll, type Product } from '@/models/products';
-import ProductCard from '@/components/ProductCard.vue';
-
+import ProductCard from '@/components/ProductComponents/ProductCard.vue';
+import FlyoutPanel from '@/components/ProductComponents/FlyoutPanel.vue';
 const products = ref<Product[]>([]);
 products.value = getAll().data
 
@@ -12,6 +12,7 @@ products.value = getAll().data
     <div class="shelf">
         <ProductCard v-for="product in products" :key="product.id" :product="product" />
     </div>
+    <FlyoutPanel/>
 </template>
 
 <style scoped>
@@ -32,6 +33,6 @@ products.value = getAll().data
 
 .shelf .box {
     width: 300px;
-    height: 500px;
+    height: auto;
 }
 </style>

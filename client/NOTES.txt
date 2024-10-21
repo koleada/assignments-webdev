@@ -1,0 +1,6 @@
+use props/ slots to transport data between pages. Local
+storage will not be good enough. Interactive data is very easy since we use
+ref arrays of our stuff. Just need to add a addUser/addWorkout function
+to our models and remove functions as well. Very easy to just remove an array
+element may not even need an extra function for that. Surly will need one
+to add an item to the array. 
