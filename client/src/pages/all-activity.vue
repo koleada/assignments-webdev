@@ -3,18 +3,33 @@
         <h1 class="title is-3">All Fitness Activity</h1>
     
         <div>
-            <activity-card v-for="workout in workouts" :key="workout.id" :workout="workout" />
+            <activity-card class='activity-card' v-for="workout in workouts" @delete-workout="handleDeleteWorkout" :key="workout.id" :workout="workout" />
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script  lang="ts">
     import { ref } from 'vue'
     import { getAll, type Workout } from '@/models/workouts';
     import ActivityCard from '@/components/ActivityCard.vue';
 
-    const workouts = ref<Workout[]>([]);
-    workouts.value = getAll().data
+    
+
+    export default{
+        data() {
+            return {
+                workouts: ref<Workout[]>(getAll().data),
+            }
+        },
+        components: {
+            ActivityCard,
+        },
+        methods: {  
+            handleDeleteWorkout(id) {
+                this.workouts = this.workouts.filter((workout) => workout.id !== id);
+            },
+        }
+    }
 </script>
 
 <style scoped>

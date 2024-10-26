@@ -1,7 +1,4 @@
-<script setup lang="ts">
-    import ActivityCard from '@/components/ActivityCard.vue';
-    import WorkoutForm from "@/components/WorkoutForm.vue";
-</script>
+
 <template>
     <div class="main">
         <div class="mainTitle">
@@ -61,7 +58,7 @@
             </div>
 
             
-            <activity-card class='activity-card' v-for="workout in workouts" :key="workout.id" :workout="workout" />
+            <activity-card class='activity-card' v-for="workout in workouts" @delete-workout="handleDeleteWorkout" :key="workout.id" :workout="workout" />
         </div>
     </div>
 </template>
@@ -69,13 +66,16 @@
 <script lang="ts">
   import  { getUserById } from "@/models/users";
   import { type Workout, getWorkoutsByUserId } from "@/models/workouts";
-  
+  import ActivityCard from '@/components/ActivityCard.vue';
+  import WorkoutForm from "@/components/WorkoutForm.vue";
   import { ref } from 'vue';
 
   export default {
     components: {
-        WorkoutForm,
+        ActivityCard,
+        WorkoutForm
     },
+    
     data() {
         return {
           user:  getUserById(-1), 
@@ -92,11 +92,15 @@
             location: '',
             type: '',
             duration: 0,
+            userId: -1
           }
 
         };
     },
     methods: {  
+      handleDeleteWorkout(id) {
+          this.workouts = this.workouts.filter((workout) => workout.id !== id);
+      },
       showModal() {
         this.showForm = true;
       },
@@ -168,7 +172,7 @@
         updateWorkout(updatedWorkout) {
           this.newWorkout = updatedWorkout; 
         },
-        generateUniqueId() {
+        generateUniqueId(): number {
             return Math.floor(Math.random() * 1000000); 
         }
     },

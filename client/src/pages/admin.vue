@@ -11,11 +11,11 @@
                     <button class="delete" aria-label="close" @click="closeModal"></button>
                     </header>
                     <section class="modal-card-body">
-                        <add-user-form />
+                        <add-user-form :newUser="newUser" @add-user="updateUser" />
                     </section>
                     <footer class="modal-card-foot">
                     <div class="buttons">
-                        <button class="button is-primary" @click="closeModal">Submit</button>
+                        <button class="button is-primary" @click="addUser">Submit</button>
                     </div>
                     </footer>
                 </div>
@@ -41,7 +41,7 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.userId }}</td>
                     <td class="actions">
-                        <button @click="deleteUser(user.userId)" class="button"><i class="fal fa-trash" id="trash"></i></button>
+                        <button @click="deleteUser(user.userId)" class="button"><i class="far fa-trash-alt"></i></button>
                         <button @click="editUser(user)" class="button"><i class="far fa-edit"></i></button>
                     </td>
                 </tr>
@@ -58,13 +58,22 @@
     import { getAll, type User } from '@/models/users';
 
     
-    // <i class="far fa-edit"></i>
-    // <i class="fal fa-trash"></i>
     export default {
+        components: {
+            AddUserForm,
+        },
         data() {
             return {
-                users: ref<User[]>(getAll().data),
-                showForm: false
+                users: ref<User[]>([]),
+                showForm: false,
+                newUser: { 
+                    name: '',
+                    username: '',
+                    password: '',
+                    email: '', 
+                    profileImageUrl: '',
+                    userId: -1,
+                }
             };
         },
         methods: {
@@ -75,13 +84,36 @@
                 this.showForm = false;
             },
             deleteUser(userId: number) {
-            // Implement your logic to delete the user
-            console.log('Deleting user:', userId);
+                this.users = this.users.filter((user) => user.userId !== userId);
             },
             editUser(user: User) {
             // Implement your logic to edit the user
             console.log('Editing user:', user);
+            },
+            addUser() {
+                const uniqueId = this.generateUniqueId(); 
+                this.newUser.userId = uniqueId;
+                this.users.push({ ...this.newUser }); 
+                this.newUser = { 
+                    name: '',
+                    username: '',
+                    password: '',
+                    email: '', 
+                    profileImageUrl: '',
+                    userId: -1,
+                };
+                this.showForm = false; // Close the modal after adding the workout
+            },
+            updateUser(updatedUser) {
+                this.newUser = updatedUser; 
+            },
+            generateUniqueId(): number {
+                return Math.floor(Math.random() * 1000000); 
             }
+        },
+        mounted() {
+            this.users = getAll().data;
+            
         },
         
     };

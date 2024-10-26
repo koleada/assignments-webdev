@@ -22,6 +22,7 @@
             <div><strong>{{ user.name }}</strong> - <small>@{{ user.username }}</small></div>
             <small>Location - {{ workout.location }}</small>
             <small>{{ new Date(workout.dateOfPosting).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) }}</small>
+            <button class="delete" @click="deleteWorkout" aria-label="close"></button>
           </div>
           <div id="descAndImg">
           <div id="description">
@@ -31,7 +32,7 @@
             </p>
           </div>
           <figure class="image">
-            <img :src="workout.imageUrl" alt="Workout Image" class="workoutImg" />
+            <img :src="workout.imageUrl" alt="Workout Image" class="workoutImg" style="margin-top: 2vh; margin-right: 1vw;" />
           </figure>
         </div>
         </div>
@@ -62,7 +63,7 @@
 <script setup lang="ts">
     import type { Workout } from '@/models/workouts';
     import { getUserById } from '@/models/users';
-    import { ref } from 'vue';
+    import { ref, defineProps, defineEmits } from 'vue';
     
     const props = defineProps<{
         workout: Workout 
@@ -70,6 +71,13 @@
 
     const w= ref(props.workout);
     const user = getUserById(w.value.userId);
+
+    
+    const emit = defineEmits(["delete-workout"]);
+
+    const deleteWorkout = () => {
+      emit("delete-workout", w.value.id);
+    };
     
 </script>
 

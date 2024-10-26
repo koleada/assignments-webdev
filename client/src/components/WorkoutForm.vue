@@ -57,8 +57,7 @@
 </template>
 
 <script lang="ts">
-    import  { getUserById } from "@/models/users";
-    import { ref } from 'vue';
+    
 
     export default {
         props: {
@@ -69,28 +68,26 @@
         },
         data() {
             return {
-            user: getUserById(-1), 
-            workouts: ref<Workout[]>([]),
-            formData: { 
-                id: null,
-                description: '',
-                dateOfPosting: '',
-                imageUrl: '', 
-                distance: 0,
-                location: '',
-                type: '',
-                duration: 0,
-            }
+                formData: { 
+                    id: null,
+                    description: '',
+                    dateOfPosting: '',
+                    imageUrl: '', 
+                    distance: 0,
+                    location: '',
+                    type: '',
+                    duration: 0,
+                }
             };
         },
         watch: {
             newWorkout: {
-            immediate: true,
-            handler(newVal) {
-                this.formData = {
-                ...newVal,
-                };
-            },
+                immediate: true,
+                handler(newVal) {
+                    this.formData = {
+                    ...newVal,
+                    };
+                },
             },
         },
         methods: {
