@@ -7,7 +7,7 @@
                 <div class="modal-background"></div>
                 <div class="modal-card">
                     <header class="modal-card-head">
-                    <p class="modal-card-title title is-3">Add User</p>
+                    <p class="modal-card-title title is-3">{{ isEditMode ? 'Edit User' : 'Add User' }}</p>
                     <button class="delete" aria-label="close" @click="closeModal"></button>
                     </header>
                     <section class="modal-card-body">
@@ -15,7 +15,7 @@
                     </section>
                     <footer class="modal-card-foot">
                     <div class="buttons">
-                        <button class="button is-primary" @click="addUser">Submit</button>
+                        <button class="button is-primary" @click="isEditMode ? saveUserEdits() : addUser()">Submit</button>
                     </div>
                     </footer>
                 </div>
@@ -66,6 +66,7 @@
             return {
                 users: ref<User[]>([]),
                 showForm: false,
+                isEditMode: false,
                 newUser: { 
                     name: '',
                     username: '',
@@ -79,6 +80,15 @@
         methods: {
             showModal() {
                 this.showForm = true;
+                this.isEditMode = false; // Reset edit mode
+                this.newUser = { 
+                    name: '',
+                    username: '',
+                    password: '',
+                    email: '', 
+                    profileImageUrl: '',
+                    userId: -1,
+                }; // Reset newUser for adding
             },
             closeModal() {
                 this.showForm = false;
@@ -87,8 +97,9 @@
                 this.users = this.users.filter((user) => user.userId !== userId);
             },
             editUser(user: User) {
-            // Implement your logic to edit the user
-            console.log('Editing user:', user);
+                this.newUser = { ...user }; // Prefill form with user's data
+                this.isEditMode = true; // Set edit mode
+                this.showForm = true; // Show modal
             },
             addUser() {
                 const uniqueId = this.generateUniqueId(); 
@@ -103,6 +114,13 @@
                     userId: -1,
                 };
                 this.showForm = false; // Close the modal after adding the workout
+            },
+            saveUserEdits() {
+                const index = this.users.findIndex(u => u.userId === this.newUser.userId);
+                if (index !== -1) {
+                    this.users[index] = { ...this.newUser }; // Update the user data
+                }
+                this.closeModal(); // Close the modal after saving edits
             },
             updateUser(updatedUser) {
                 this.newUser = updatedUser; 

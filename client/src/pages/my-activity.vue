@@ -58,7 +58,7 @@
             </div>
 
             
-            <activity-card class='activity-card' v-for="workout in workouts" @delete-workout="handleDeleteWorkout" :key="workout.id" :workout="workout" />
+            <activity-card class='activity-card' :showDeleteButton="true" v-for="workout in workouts" @delete-workout="handleDeleteWorkout" :key="workout.id" :workout="workout" />
         </div>
     </div>
 </template>

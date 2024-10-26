@@ -22,7 +22,7 @@
             <div><strong>{{ user.name }}</strong> - <small>@{{ user.username }}</small></div>
             <small>Location - {{ workout.location }}</small>
             <small>{{ new Date(workout.dateOfPosting).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) }}</small>
-            <button class="delete" @click="deleteWorkout" aria-label="close"></button>
+            <button v-if="showDeleteButton" class="delete" @click="deleteWorkout" aria-label="close"></button>
           </div>
           <div id="descAndImg">
           <div id="description">
@@ -66,7 +66,11 @@
     import { ref, defineProps, defineEmits } from 'vue';
     
     const props = defineProps<{
-        workout: Workout 
+        workout: Workout, 
+        showDeleteButton: {
+            type: Boolean,
+            default: false,
+        },
     }>()
 
     const w= ref(props.workout);
