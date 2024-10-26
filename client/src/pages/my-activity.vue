@@ -41,7 +41,7 @@
         </div>
         <div class="activity" >
             <h2 class="title is-3" id="history-title">{{ user.name }}'s Activity History</h2>
-            <button @click="showModal" class="button ">Add Activity</button>
+            <button @click="showModal" class="button addBtn">Add Activity</button>
             <div class="modal" :class="{ 'is-active': showForm }">
                 <div class="modal-background"></div>
                 <div class="modal-card">
@@ -50,11 +50,11 @@
                     <button class="delete" aria-label="close" @click="closeModal"></button>
                     </header>
                     <section class="modal-card-body">
-                        <workout-form />
+                        <workout-form :newWorkout="newWorkout" @add-workout="updateWorkout" />
                     </section>
                     <footer class="modal-card-foot">
                     <div class="buttons">
-                        <button class="button is-primary" @click="closeModal">Submit</button>
+                        <button class="button is-primary" @click="addWorkout">Submit</button>
                     </div>
                     </footer>
                 </div>
@@ -73,7 +73,9 @@
   import { ref } from 'vue';
 
   export default {
-
+    components: {
+        WorkoutForm,
+    },
     data() {
         return {
           user:  getUserById(-1), 
@@ -81,6 +83,17 @@
           allTimeStats: {totalDistance: 0, totalTime: '', totalCals: 0,},
           weeklyStats: {totalDistance: 0, totalTime: '', totalCals: 0,},
           showForm: false,
+          newWorkout: {
+            id: null,
+            description: '',
+            dateOfPosting: '',
+            imageUrl: '',
+            distance: 0,
+            location: '',
+            type: '',
+            duration: 0,
+          }
+
         };
     },
     methods: {  
@@ -133,7 +146,31 @@
         weeklyStats.totalTime = formatTime(totalTime);
 
         return weeklyStats;
-      }
+      },
+        addWorkout() {
+            const uniqueId = this.generateUniqueId(); 
+            this.newWorkout.id = uniqueId; 
+            const userId = parseInt(localStorage.getItem('loggedInUserId'));
+            this.newWorkout.userId = userId;
+            this.workouts.push({ ...this.newWorkout }); 
+            this.newWorkout = { 
+                id: null,
+                description: '',
+                dateOfPosting: '',
+                imageUrl: '',
+                distance: 0,
+                location: '',
+                type: '',
+                duration: 0,
+            };
+            this.showForm = false; // Close the modal after adding the workout
+        },
+        updateWorkout(updatedWorkout) {
+          this.newWorkout = updatedWorkout; 
+        },
+        generateUniqueId() {
+            return Math.floor(Math.random() * 1000000); 
+        }
     },
 
     mounted() {
@@ -231,5 +268,8 @@
         font-weight: bold;
         color: #00d1b2;
         margin-bottom: 0!important;
+    }
+    .addBtn{
+        margin-bottom: 2vh;
     }
 </style>
