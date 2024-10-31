@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "description": "A package for all web-dev assignments ",
   "scripts": {
-    "start": "node server/index.mjs",
-    "dev": "nodemon server/index.mjs"
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
   },
   "dependencies": {
     "express": "^4.21.0",
     "dayjs": "^1.11.13"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "express": "^4.21.0",
+    "dayjs": "^1.11.13"
   },
   "author": "",
   "license": "ISC"
