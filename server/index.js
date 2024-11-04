@@ -2,10 +2,17 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
+const userController = require('./controllers/users');
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
-});
+})
+  .get('/about', (req, res) => {
+    res.send('About Us');
+  })
+  .use('/users', userController)
+

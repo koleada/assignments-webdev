@@ -1,0 +1,36 @@
+{
+    "users": [
+      {
+        "name": "Admin User",
+        "username": "admin",
+        "password": "admin",
+        "email": "admin@admin.com",
+        "profileImageUrl": "https://whatever",
+        "userId": 0
+      },
+      {
+        "name": "John Doe",
+        "username": "johndoe",
+        "password": "password1",
+        "email": "johndoe@example.com",
+        "profileImageUrl": "https://trovatrip.com/hubfs/TrovaTrip-Acadia-National-Park-Bar-Harbor.jpg",
+        "userId": 1
+      },
+      {
+        "name": "Jane Smith",
+        "username": "janesmith",
+        "password": "password2",
+        "email": "janesmith@example.com",
+        "profileImageUrl": "https://example.com/profile2.jpg",
+        "userId": 2
+      },
+      {
+        "name": "Alice Johnson",
+        "username": "alicejohnson",
+        "password": "password3",
+        "email": "alicejohnson@example.com",
+        "profileImageUrl": "https://example.com/profile3.jpg",
+        "userId": 3
+      }
+    ]
+  }
