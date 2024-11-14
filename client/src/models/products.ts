@@ -1,11 +1,9 @@
 import data from '../data/products.json'
 import type { DataListEnvelope } from './dataEnvelope';
+import { rest } from './myFetch';
 
-export function getAll() : DataListEnvelope<Product>{
-    return{
-        data: data.items,
-        total: data.total
-    }
+export async function getAll(){
+    return rest<DataListEnvelope<Product>>('/api/products')
 }
 
 

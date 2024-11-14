@@ -4,7 +4,7 @@ import { getAll, type Product } from '@/models/products';
 import ProductCard from '@/components/ProductComponents/ProductCard.vue';
 import FlyoutPanel from '@/components/ProductComponents/FlyoutPanel.vue';
 const products = ref<Product[]>([]);
-products.value = getAll().data
+getAll().then((data) => products.value = data.data)
 
 </script>
 
