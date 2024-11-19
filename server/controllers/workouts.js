@@ -1,4 +1,4 @@
-const model = require('../model/users.js')
+const model = require('../model/workouts.js')
 const express = require('express')
 const app = express.Router()
 
@@ -13,7 +13,14 @@ app.get("/", (req, res, next) => {
     .get("/:id", (req, res, next) => {
         const id = req.params.id
         model
-            .getUserById(+id)
+            .getWorkoutById(+id)
+            .then((x) => res.send(x))
+            .catch(next)
+    })
+    .get("/user-workouts/:id", (req, res, next) => {
+        const id = req.params.id
+        model
+            .getWorkoutsByUserId(+id)
             .then((x) => res.send(x))
             .catch(next)
     })

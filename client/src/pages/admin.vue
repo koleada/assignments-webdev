@@ -122,7 +122,7 @@
                 }
                 this.closeModal(); // Close the modal after saving edits
             },
-            updateUser(updatedUser) {
+            updateUser(updatedUser: User) {
                 this.newUser = updatedUser; 
             },
             generateUniqueId(): number {

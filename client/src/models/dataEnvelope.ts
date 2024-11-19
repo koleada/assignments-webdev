@@ -1,10 +1,11 @@
 export interface DataEnvelope<T> {
     data: T;
-    error: string;
+    isSuccess: boolean;
+    message?: string;
 }
 
 export interface DataListEnvelope<T> {
     data: T[];
     total: number;
-    error?: string;
+    isSuccess?: boolean;
 }

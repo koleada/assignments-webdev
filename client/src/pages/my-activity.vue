@@ -84,7 +84,7 @@
           weeklyStats: {totalDistance: 0, totalTime: '', totalCals: 0,},
           showForm: false,
           newWorkout: {
-            id: null,
+            id: -1,
             description: '',
             dateOfPosting: '',
             imageUrl: '',
@@ -98,7 +98,7 @@
         };
     },
     methods: {  
-      handleDeleteWorkout(id) {
+      handleDeleteWorkout(id: number) {
           this.workouts = this.workouts.filter((workout) => workout.id !== id);
       },
       showModal() {
@@ -154,11 +154,10 @@
         addWorkout() {
             const uniqueId = this.generateUniqueId(); 
             this.newWorkout.id = uniqueId; 
-            const userId = parseInt(localStorage.getItem('loggedInUserId'));
-            this.newWorkout.userId = userId;
+            this.newWorkout.userId = parseInt(localStorage.getItem('loggedInUserId')) || -1;
             this.workouts.push({ ...this.newWorkout }); 
             this.newWorkout = { 
-                id: null,
+                id: -1,
                 description: '',
                 dateOfPosting: '',
                 imageUrl: '',
@@ -166,10 +165,11 @@
                 location: '',
                 type: '',
                 duration: 0,
+                userId: -1
             };
             this.showForm = false; // Close the modal after adding the workout
         },
-        updateWorkout(updatedWorkout) {
+        updateWorkout(updatedWorkout: Workout) {
           this.newWorkout = updatedWorkout; 
         },
         generateUniqueId(): number {

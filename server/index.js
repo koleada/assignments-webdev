@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 const userController = require('./controllers/users');
+const workoutController = require('./controllers/workouts');
 
 app.use(express.json());
 
@@ -26,9 +27,24 @@ app.get('/', (req, res, next) => {
   res.send('Hello World!');
 })
   .use("/api/v1/users", userController)
+  .use("/api/v1/workouts", workoutController)
 
-    // catch all
+  // catch all
    .get("*", (req, res, next) => {
     res.sendFile(__dirname + "/dist/index.html");
   })
 
+
+// error handling middleware
+app.use((err, req, res, next) => {
+    // Set default error status and message
+    const status = err.status || 500;
+    const message = err.message || "Internal Server Error";
+
+    res.status(status).json({
+        isSuccess: false,
+        message,
+        data: err.data || null,
+        status, // Include status for debugging purposes
+    });
+});

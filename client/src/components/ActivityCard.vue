@@ -68,7 +68,7 @@
     const props = defineProps<{
         workout: Workout, 
         showDeleteButton: {
-            type: Boolean,
+            type: boolean,
             default: false,
         },
     }>()
