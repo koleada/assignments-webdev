@@ -2,6 +2,9 @@ const express = require('express')
 const app = express.Router()
 const data = require('../data/users.json')
 
+const db = require("./supabase")
+const conn = db.getConnection()
+
 /**
  * @typedef {import("../../client/src/models/users").User} User
  */
@@ -19,6 +22,16 @@ const data = require('../data/users.json')
  * @returns {Promise<DataListEnvelope<User>>}
  */
 async function getAll(){
+    // get all users from supabase db (where users is our table name):
+
+    // const { data, error, count } = await conn.from('users').select(*, { count: "estimated" });
+    // return {
+    //     isSuccess: true,
+    //     data: data,
+    //     total: count,
+    // }
+
+
     return {
         data: data.users,
         total: data.users.length
@@ -66,7 +79,7 @@ async function add(user){
  * @returns {Promise<DataEnvelope<User>>}
  */
 async function update(id, user) {
-    const userToUpdate =  data.users.find(user => user.userId === id);
+    const userToUpdate =  await getUserById(id);
     if (!userToUpdate) throw {
         isSuccess: false,
         message: "User not found",
@@ -74,10 +87,11 @@ async function update(id, user) {
         status: 404,
     }
     else {
-        Object.assign(userToUpdate, user)
+        Object.assign(userToUpdate.data, user)
         return {
             isSuccess: true,
-            data: userToUpdate,
+            // maybe change the below to get the updated user and display the full obj
+            data: userToUpdate.data,
         }
     }
 }

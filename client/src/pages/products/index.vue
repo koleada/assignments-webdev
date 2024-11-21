@@ -3,7 +3,10 @@ import { ref } from 'vue'
 import { getAll, type Product } from '@/models/products';
 import ProductCard from '@/components/ProductComponents/ProductCard.vue';
 import FlyoutPanel from '@/components/ProductComponents/FlyoutPanel.vue';
+
+
 const products = ref<Product[]>([]);
+// have to do it this way now because were doing an async call to get the products via our API
 getAll().then((data) => products.value = data.data)
 
 </script>

@@ -1,31 +1,28 @@
 #uses the REST CLIENT extension to send requests in vscode kind of cool.
 
 ###
-GET http://localhost:3000/api/v1/workouts/
+GET http://localhost:3000/api/v1/users/
 
 ###
 DELETE http://localhost:3000/api/v1/workouts/7
 
 ###
-POST http://localhost:3000/api/v1/workouts
+POST http://localhost:3000/api/v1/users
 Content-Type: application/json
 
 {
-  "description": "asdsad",
-      "dateOfPosting": "2024-10-12",
-      "imageUrl": "https://example.com/workout6.jpg",
-      "distance": 0,
-      "type": "asdasd",
-      "duration": 45,
-      "userId": 3,
-      "location": "asdasd"
-
+      "name": "sdsdsdsd",
+      "username": "sds",
+      "password": "sdsad",
+      "email": "sdsds@ds.com",
+      "profileImageUrl": "https://whatever",
+      "userId": 0
 }
 
 ###
-PUT http://localhost:3000/api/v1/workouts/7
+PUT http://localhost:3000/api/v1/users/4
 Content-Type: application/json
 
 {
-    "description": "test1323"
+    "name": "test1323"
 }

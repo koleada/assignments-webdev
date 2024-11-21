@@ -87,7 +87,7 @@ async function add(workout){
  * @returns {Promise<DataEnvelope<Workout>>}
  */
 async function update(id, workout) {
-    const workoutToUpdate =  data.workouts.find(workout => workout.id === id);
+    const workoutToUpdate =  await getWorkoutById(id);
     if (!workoutToUpdate) throw {
         isSuccess: false,
         message: "Workout not found",
@@ -95,10 +95,10 @@ async function update(id, workout) {
         status: 404,
     }
     else {
-        Object.assign(workoutToUpdate, workout)
+        Object.assign(workoutToUpdate.data, workout)
         return {
             isSuccess: true,
-            data: workoutToUpdate,
+            data: workoutToUpdate.data,
         }
     }
 }

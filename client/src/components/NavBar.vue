@@ -155,7 +155,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 7vh!important;
+    height: 100%!important;
   }
   .fa-dumbbell{
     font-size: 1.8rem;
