@@ -25,7 +25,7 @@
             ActivityCard,
         },
         methods: {  
-            handleDeleteWorkout(id) {
+            handleDeleteWorkout(id: any) {
                 this.workouts = this.workouts.filter((workout) => workout.id !== id);
             },
         }
