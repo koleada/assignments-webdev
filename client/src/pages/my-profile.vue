@@ -134,6 +134,8 @@ import AddUserForm from "@/components/AddUserForm.vue"
                     return;
                 }
                 await deleteUser(userId, token)
+                localStorage.removeItem("loggedInUserId");
+                localStorage.removeItem('jwtToken')
                 this.$router.push('/').then(() => window.location.reload());
             },
             async saveUserEdits() {

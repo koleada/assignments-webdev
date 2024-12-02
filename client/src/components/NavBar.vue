@@ -104,6 +104,7 @@
     methods: {
       logOut(){
         localStorage.removeItem('loggedInUserId');
+        localStorage.removeItem('jwtToken');
         this.$router.push('/').then(() => { location.reload(); })
         
       }, 

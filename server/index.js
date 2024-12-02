@@ -21,8 +21,20 @@ app.use(express.static(__dirname + "/dist"));
 // });
 
 app.use(cors());
+const allowedOrigins = [
+    "http://127.0.0.1:5173", // Local dev server
+    "https://final-project-6uo1.onrender.com/", // Render.com domain
+];
+
 const corsConfig = {
-    origin: "http://127.0.0.1:5173",
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
 };
 app.use(cors(corsConfig));
