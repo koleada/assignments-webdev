@@ -152,11 +152,13 @@
 
               if(!response.isSuccess){
                 this.passwordError = 'Failed to register';
+                return
               }
             }
             catch(error){
               this.passwordError = 'Failed to register';
               console.error(error);
+              return
             }
             
             //redirect to login w/ sucess method\

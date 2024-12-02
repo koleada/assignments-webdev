@@ -125,7 +125,7 @@
     .is-3{
         color: #00d1b2;
     }
-    .workouts .workoutCard:not(:last-child) {
+    .workouts .workoutCard {
         margin-bottom: 2vh;
     }
 </style>
