@@ -35,7 +35,7 @@
     <div class="field">
     <label class="label">Date</label>
     <div class="control">
-        <input class="input is-primary is-rounded" v-model="formData.dateOfPosting" @input="updateNewWorkout" type="date" >
+        <input class="input is-primary is-rounded" v-model="formData.dateOfPosting" @input="updateNewWorkout" type="datetime-local" >
     </div>
     </div>
     <div class="field">
@@ -64,6 +64,10 @@
             newWorkout: {
                 type: Object,
                 required: true,
+            },
+            initialData: {
+                type: Object,
+                default: null,
             },
         },
         data() {

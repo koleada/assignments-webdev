@@ -4,8 +4,7 @@ export interface DataEnvelope<T> {
     message?: string;
 }
 
-export interface DataListEnvelope<T> {
+export interface DataListEnvelope<T> extends DataEnvelope<T[]> {
     data: T[];
     total: number;
-    isSuccess?: boolean;
 }

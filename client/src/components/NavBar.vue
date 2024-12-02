@@ -18,46 +18,54 @@
   <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{'is-active': isOpen}">
     <div class="navbar-start" >
 
-      <div v-if="user.userId != -1">
+      <a class="navbar-item special left" href="/all-activity">
+        All Activity
+      </a>
+      
+      <div v-if="user != null">
         <a class="navbar-item special left" href="/my-activity" >
           My Activity
         </a>
       </div>
 
-      <a class="navbar-item special left" href="/all-activity">
-        All Activity
-      </a>
+      <div v-if="user != null">
+        <a class="navbar-item special left" href="/my-friends" >
+          My Friends
+        </a>
+      </div>
+      
+      <div v-if="user != null">
+        <a class="navbar-item special left" href="/my-profile" >
+          My Profile
+        </a>
+      </div>
 
-      <div v-if="user.userId == 0">
+      <div v-if="user != null && user.userId == 0">
         <a class="navbar-item special left" href="/admin" >
           Admin
         </a>
       </div>
 
-      <div class="navbar-item has-dropdown is-hoverable is-primary">
+      <!-- <div class="navbar-item has-dropdown is-hoverable is-primary">
         <a class="navbar-link left">
           More
         </a>
-
         <div class="navbar-dropdown">
-          <a class="navbar-item">
-            About
-          </a>
+          
           <a class="navbar-item">
             Contact
           </a>
-          <hr class="navbar-divider">
           <a class="navbar-item">
             Report an issue
           </a>
         </div>
-      </div>
+      </div> -->
       
     </div>
 
     <div class="navbar-end"  >
         <div class="navbar-item">
-          <div class="buttons" v-if="user.userId == -1">
+          <div class="buttons" v-if="user == null">
             <a class="button is-primary" id="signUp" href="/signup">
               <strong>Sign up</strong>
             </a>
@@ -83,30 +91,29 @@
 </template>
 
 <script lang="ts">
-  import  { getUserById } from "@/models/users";
+  import  { getFriendByUserId } from "@/models/users";
   
   export default {
     
     data() {
         return {
-          user:  getUserById(-1), 
+          user:  null, 
           isOpen: false
         };
     },
     methods: {
       logOut(){
         localStorage.removeItem('loggedInUserId');
-        this.user = getUserById(-1);
-        this.$router.push('/');
+        this.$router.push('/').then(() => { location.reload(); })
+        
       }, 
       async getUserData(userId: number) {
         try {
-          const user = await getUserById(userId);
-          this.user = user;
+          getFriendByUserId(userId).then(data => {this.user = data.data});
           
         } catch (error) {
           console.error('Error fetching user data:', error);
-          this.user = getUserById(-1); // Handle potential errors
+          this.user = null; 
         }
       },
     },
@@ -115,9 +122,9 @@
 
       if (id) {
         const numId = parseInt(id);
-        this.getUserData(numId); // Call the new function
+        this.getUserData(numId); 
       } else {
-        this.user = getUserById(-1);
+        this.user = null;
       }
     },
 

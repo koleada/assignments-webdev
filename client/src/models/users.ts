@@ -1,38 +1,38 @@
-import data from '../data/users.json'
 import type { DataListEnvelope } from './dataEnvelope';
+import { api } from './myFetch'
 
-export function getAll() : DataListEnvelope<User>{
-    return{
-        data: data.users,
-        total: data.users.length
-    }
+export async function getAll( token:string){
+    return api<DataListEnvelope<User>>('users', null, 'GET', token)
 }
 
-export function login(email:string, password:string) { 
-    const user = data.users.find(user => user.email === email && user.password === password);
-    if(user){
-        return user;
-    }
-    return false;
+export async function login(email:string, password:string) { 
+    return api<DataListEnvelope<User>>('users/login', { email: email, password: password}, 'POST')
 }
 
-export function getUserById(userId: number) : User {
-    const user =  data.users.find(user => user.userId === userId);
-    if (!user) {
-        return {
-          name: 'Unknown User',
-          username: 'Unknown User',
-          password: 'UnknownUser',
-          email: 'UnknownUser@example.com',
-          profileImageUrl: 'https://via.placeholder.com/150',
-          userId: -1,
-
-        };
-    }
-    
-    return user;
+export async function getUserById(userId: number, token:string) {
+    return api<DataListEnvelope<User>>('users/' + userId, null, 'GET', token)
 }
 
+
+export async function deleteUser(userId: number, token:string){
+    return api<DataListEnvelope<User>>('users/' + userId, null, 'DELETE', token)
+}
+
+export async function updateExistingUser(userId: number, data: any, token:string){
+    return api<DataListEnvelope<User>>('users/' + userId, data, 'PATCH', token)
+}
+
+export async function addNewUser(data: any){
+    return api<DataListEnvelope<User>>('users' , data, 'POST')
+}
+
+export async function getFriendByUserId(userId: number){
+    return api<DataListEnvelope<User>>('users/friends/' + userId, null, 'GET')
+}
+
+export async function getFriendByName(name: string){
+    return api<DataListEnvelope<User>>('users/friends/name/', name, 'POST')
+}
 export interface User {
     name: string;
     username: string;

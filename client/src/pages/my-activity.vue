@@ -2,7 +2,7 @@
 <template>
     <div class="main">
         <div class="mainTitle">
-            <h1 class="title is-2" style="text-align: center;">{{ user.name }}'s Fitness Activity:</h1>
+            <h1 class="title is-3" style="text-align: center;">{{ user.name }}'s Fitness Activity:</h1>
         </div>
         <div  id="allStats">
             <div class="allTime box">
@@ -20,9 +20,9 @@
                     <p class="subtitle is-6">Total Calories Burned</p>
                 </div>    
             </div>
-            <div class="weekly box">
+            <div class="weekly box"> 
                 <h2 class="title is-5">{{ user.name }}'s Weekly Stats</h2>
-                <div class="stat">
+                <div class="stat"> 
                     <p class="title is-5">{{ weeklyStats.totalDistance }}</p>
                     <p class="subtitle is-6">Total Distance</p>
                 </div>
@@ -43,29 +43,29 @@
                 <div class="modal-background"></div>
                 <div class="modal-card">
                     <header class="modal-card-head">
-                    <p class="modal-card-title title is-3">Add Activity</p>
+                    <p class="modal-card-title title is-3">{{ isEditMode ? 'Update Activity' : 'Add Activity' }}</p>
                     <button class="delete" aria-label="close" @click="closeModal"></button>
                     </header>
                     <section class="modal-card-body">
-                        <workout-form :newWorkout="newWorkout" @add-workout="updateWorkout" />
+                        <workout-form :initialData="isEditMode ? selectedWorkout : null" :newWorkout="newWorkout" @add-workout="updateWorkout" />
                     </section>
                     <footer class="modal-card-foot">
                     <div class="buttons">
-                        <button class="button is-primary" @click="addWorkout">Submit</button>
-                    </div>
+                        <button class="button is-primary" @click="handleSubmit">Submit</button>
+                    </div> 
                     </footer>
                 </div>
             </div>
 
             
-            <activity-card class='activity-card' :showDeleteButton="true" v-for="workout in workouts" @delete-workout="handleDeleteWorkout" :key="workout.id" :workout="workout" />
+            <activity-card class='activity-card' :showDeleteButton="true" v-for="workout in workouts" @edit-workout="openEditModal" @delete-workout="handleDeleteWorkout" :key="workout.id" :workout="workout" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
-  import  { getUserById } from "@/models/users";
-  import { type Workout, getWorkoutsByUserId } from "@/models/workouts";
+  import  { getFriendByUserId } from "@/models/users";
+  import { type Workout, getWorkoutsByUserId, deleteWorkout, addWorkout, editWorkout } from "@/models/workouts";
   import ActivityCard from '@/components/ActivityCard.vue';
   import WorkoutForm from "@/components/WorkoutForm.vue";
   import { ref } from 'vue';
@@ -78,13 +78,19 @@
     
     data() {
         return {
-          user:  getUserById(-1), 
+          user: {
+              name: '',
+              username: '',
+              password: '',
+              email: '', 
+              profileImageUrl: '',
+              userId: -1
+          }, 
           workouts: ref<Workout[]>([]),
           allTimeStats: {totalDistance: 0, totalTime: '', totalCals: 0,},
           weeklyStats: {totalDistance: 0, totalTime: '', totalCals: 0,},
           showForm: false,
           newWorkout: {
-            id: -1,
             description: '',
             dateOfPosting: '',
             imageUrl: '',
@@ -93,19 +99,53 @@
             type: '',
             duration: 0,
             userId: -1
-          }
+          },
+          selectedWorkout: null,
+          isEditMode: false
 
         };
     },
     methods: {  
-      handleDeleteWorkout(id: number) {
-          this.workouts = this.workouts.filter((workout) => workout.id !== id);
+      async handleDeleteWorkout(id: number) {
+        const token = localStorage.getItem("jwtToken") || ''
+        if (!token) {
+            console.log('No token found');
+            return;
+        }
+        try {
+            await deleteWorkout(id, token)
+            await this.fetchWorkouts(parseInt(localStorage.getItem('loggedInUserId')))
+        } catch (error) {
+            console.log(error)
+        }
+        
+      },
+      openEditModal(workout) {
+        this.selectedWorkout = null
+        this.selectedWorkout = { ...workout }; // Prefill with workout data
+        this.newWorkout = { ...workout }; 
+        this.isEditMode = true;
+        this.showForm = true;
       },
       showModal() {
         this.showForm = true;
       },
       closeModal() {
-        this.showForm = false;
+        this.showForm = false; 
+        this.selectedWorkout = null;
+        this.isEditMode = false;
+        this.newWorkout = { 
+            id: -1,
+            description: '',
+            dateOfPosting: '',
+            imageUrl: '',
+            distance: 0,
+            location: '',
+            type: '',
+            duration: 0, 
+            userId: -1
+        };
+
       },
       getAllTimeStats(workouts : Workout[]) {
         const allTimeStats = {
@@ -151,46 +191,104 @@
 
         return weeklyStats;
       },
-        addWorkout() {
-            const uniqueId = this.generateUniqueId(); 
-            this.newWorkout.id = uniqueId; 
-            this.newWorkout.userId = parseInt(localStorage.getItem('loggedInUserId')) || -1;
-            this.workouts.push({ ...this.newWorkout }); 
-            this.newWorkout = { 
-                id: -1,
-                description: '',
-                dateOfPosting: '',
-                imageUrl: '',
-                distance: 0,
-                location: '',
-                type: '',
-                duration: 0,
-                userId: -1
-            };
-            this.showForm = false; // Close the modal after adding the workout
+        async handleSubmit() {
+            const token = localStorage.getItem("jwtToken") || ''
+            if (!token) {
+                console.log('No token found');
+                return;
+            }
+            if(!this.isEditMode){
+                this.newWorkout.userId = parseInt(localStorage.getItem('loggedInUserId'));
+                
+                try {
+                    await addWorkout(this.newWorkout, token)
+                } catch (error) {
+                    console.log(error)
+                }
+                
+                this.newWorkout = { 
+                    id: -1,
+                    description: '',
+                    dateOfPosting: '',
+                    imageUrl: '',
+                    distance: 0,
+                    location: '',
+                    type: '',
+                    duration: 0, 
+                    userId: -1
+                };
+                this.showForm = false;
+                await this.fetchWorkouts(parseInt(localStorage.getItem('loggedInUserId')))
+            } else {
+                this.newWorkout.userId = this.selectedWorkout.userId
+                try {
+                    await editWorkout(this.selectedWorkout.id, this.newWorkout, token)
+                } catch (error) {
+                    console.log(error)
+                }
+                this.newWorkout = { 
+                    id: -1,
+                    description: '',
+                    dateOfPosting: '',
+                    imageUrl: '',
+                    distance: 0,
+                    location: '',
+                    type: '',
+                    duration: 0, 
+                    userId: -1
+                };
+                this.selectedWorkout = null;
+                this.isEditMode = false;
+                this.showForm = false; 
+                window.location.reload();
+            }
         },
         updateWorkout(updatedWorkout: Workout) {
           this.newWorkout = updatedWorkout; 
         },
-        generateUniqueId(): number {
-            return Math.floor(Math.random() * 1000000); 
-        }
-    },
+        async fetchWorkouts(userId) {
+            const token = localStorage.getItem("jwtToken") || ''
+            if (!token) {
+                console.log('No token found');
+                return;
+            }
 
-    mounted() {
+            try {
+                const data = await getWorkoutsByUserId(parseInt(userId), token);
+                this.workouts = data.data; // Updates the reactive `workouts` array
+            } catch (error) {
+                console.error("Error fetching workouts:", error);
+            }
+        },
+        async fetchUserData(userId) {
+            try {
+                const response = await getFriendByUserId(parseInt(userId));
+                if (response.isSuccess) {
+                    this.user = response.data;
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        },
+    },
+    async mounted() {
       const id = localStorage.getItem('loggedInUserId');
       
       if (!id) {
         return;
       }
-      const workouts = ref<Workout[]>([]);
-      workouts.value = getWorkoutsByUserId(parseInt(id));
-      this.workouts = workouts.value;
-      const user = getUserById(parseInt(id));
+      const token = localStorage.getItem("jwtToken") || ''
+      if (!token) {
+          console.log('No token found');
+          return;
+      }
+      await this.fetchWorkouts(id)
+
+      await this.fetchUserData(id);
+
       
-      this.user = user;
-      this.allTimeStats = this.getAllTimeStats(workouts.value);
-      this.weeklyStats = this.getWeeklyStats(workouts.value);
+      this.allTimeStats = this.getAllTimeStats(this.workouts);
+      this.weeklyStats = this.getWeeklyStats(this.workouts);
     },
   };
   function formatTime(totalMinutes: number) {
@@ -260,6 +358,7 @@
     .activity-card *{
         color: #00d1b2!important;
     }
+    
     #history-title{
         margin-bottom: 2vh!important;
     }

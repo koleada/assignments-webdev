@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express.Router();
 const data = require("../data/workouts.json");
+const db = require("./supabase");
+
+const conn = db.getConnection();
 
 /**
  * @typedef {import("../../client/src/models/workouts").Workout} Workout
@@ -12,37 +15,54 @@ const data = require("../data/workouts.json");
  * @template T
  */
 
+async function seed() {
+    for (const workout of data.workouts) {
+        await add(workout);
+    }
+}
+
 /**
  * Get all wokrouts
  * @returns {Promise<DataListEnvelope<Workout>>}
  */
 async function getAll() {
+    const { data, error, count } = await conn
+        .from("Workouts")
+        .select("*", { count: "estimated" });
+
     return {
-        data: data.workouts,
-        total: data.workouts.length,
+        isSuccess: true,
+        message: error?.message,
+        data: data,
+        total: count,
     };
 }
 
 /**
  * Get all workouts created by a specific user
  * @param {number} id
- * @returns {Promise<DataEnvelope<Workout>>}
+ * @returns {Promise<DataListEnvelope<Workout>>}
  */
 async function getWorkoutsByUserId(id) {
-    const workouts = data.workouts.filter((workout) => workout.userId !== id);
+    const { data, error, count } = await conn
+        .from("Workouts")
+        .select("*", { count: "estimated" })
+        .eq("userId", id);
 
-    if (!workouts)
+    if (error && !data) {
         throw {
             isSuccess: false,
-            message: "No workouts found for that user",
-            data: id,
+            message: "No workouts found for userId: " + id,
+            data: [],
             status: 404,
         };
-    else
-        return {
-            isSuccess: true,
-            data: workouts,
-        };
+    }
+    return {
+        isSuccess: !error,
+        message: error?.message,
+        data: data,
+        total: count,
+    };
 }
 
 /**
@@ -51,20 +71,25 @@ async function getWorkoutsByUserId(id) {
  * @returns {Promise<DataEnvelope<Workout>>}
  */
 async function getWorkoutById(id) {
-    const workout = data.workouts.find((workouts) => workouts.id === id);
+    const { data, error } = await conn
+        .from("Workouts")
+        .select("*")
+        .eq("id", id)
+        .single();
 
-    if (!workout)
+    if (error && !data) {
         throw {
             isSuccess: false,
-            message: "Workout not found for given id",
-            data: id,
+            message: "Workout not found for id: " + id,
+            data: [],
             status: 404,
         };
-    else
-        return {
-            isSuccess: true,
-            data: workout,
-        };
+    }
+    return {
+        isSuccess: !error,
+        message: error?.message,
+        data: data,
+    };
 }
 
 /**
@@ -73,12 +98,27 @@ async function getWorkoutById(id) {
  * @returns {Promise<DataEnvelope<Workout>>}
  */
 async function add(workout) {
-    workout.id =
-        data.workouts.reduce((prev, x) => (x.id > prev ? x.id : prev), 0) + 1;
-    data.workouts.push(workout);
+    const { data, error } = await conn
+        .from("Workouts")
+        .insert([
+            {
+                description: workout.description,
+                dateOfPosting: workout.dateOfPosting,
+                imageUrl: workout.imageUrl,
+                distance: workout.distance,
+                type: workout.type,
+                duration: workout.duration,
+                userId: workout.userId,
+                location: workout.location,
+            },
+        ])
+        .select("*")
+        .single();
+
     return {
-        isSuccess: true,
-        data: workout,
+        isSuccess: !error,
+        message: error?.message,
+        data: data,
     };
 }
 
@@ -89,21 +129,38 @@ async function add(workout) {
  * @returns {Promise<DataEnvelope<Workout>>}
  */
 async function update(id, workout) {
-    const workoutToUpdate = await getWorkoutById(id);
-    if (!workoutToUpdate)
+    const { data, error } = await conn
+        .from("Workouts")
+        .update([
+            {
+                description: workout.description,
+                dateOfPosting: workout.dateOfPosting,
+                imageUrl: workout.imageUrl,
+                distance: workout.distance,
+                type: workout.type,
+                duration: workout.duration,
+                userId: workout.userId,
+                location: workout.location,
+            },
+        ])
+        .eq("id", id)
+        .select("*")
+        .single();
+
+    if (error && !data) {
         throw {
             isSuccess: false,
-            message: "Workout not found",
-            data: id,
+            message: "Workout not found for id: " + id,
+            data: null,
             status: 404,
         };
-    else {
-        Object.assign(workoutToUpdate.data, workout);
-        return {
-            isSuccess: true,
-            data: workoutToUpdate.data,
-        };
     }
+
+    return {
+        isSuccess: !error,
+        message: error?.message,
+        data: data,
+    };
 }
 
 /**
@@ -112,16 +169,26 @@ async function update(id, workout) {
  * @returns {Promise<DataEnvelope<number>>}
  */
 async function remove(id) {
-    const workoutIndex = data.workouts.findIndex((workout) => workout.id == id);
-    if (workoutIndex === -1)
+    const { data, error } = await conn
+        .from("Workouts")
+        .delete()
+        .eq("id", id)
+        .select("*")
+        .single();
+
+    if (error && !data) {
         throw {
             isSuccess: false,
-            message: "Workout not found",
-            data: id,
+            message: "Workout not found for id: " + id,
+            data: null,
             status: 404,
         };
-    data.workouts.splice(workoutIndex, 1);
-    return { isSuccess: true, message: "Workout deleted", data: id };
+    }
+    return {
+        isSuccess: !error,
+        message: error?.message,
+        data: data,
+    };
 }
 
 module.exports = {
@@ -131,4 +198,5 @@ module.exports = {
     add,
     update,
     remove,
+    seed,
 };

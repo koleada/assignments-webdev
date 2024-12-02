@@ -24,6 +24,17 @@
                   required>
               </div>
             </div>
+            <div class="field">
+              <label class="label has-text-black">Username:</label>
+              <div class="control">
+                <input 
+                  class="input is-primary is-rounded" 
+                  type="text" 
+                  placeholder="Enter your name" 
+                  v-model="username" 
+                  required>
+              </div>
+            </div>
 
             <!-- Email Field -->
             <div class="field">
@@ -38,16 +49,16 @@
               </div>
             </div>
 
-            <!-- Phone Number Field -->
             <div class="field">
-              <label class="label has-text-black">Phone Number:</label>
+              <label class="label has-text-black">Profile Image:</label>
               <div class="control">
                 <input 
                   class="input is-primary is-rounded" 
                   type="tel" 
-                  placeholder="Enter your phone number" 
-                  v-model="phone" 
+                  placeholder="https://website.com/my-image.jpg" 
+                  v-model="profileImageUrl" 
                   required>
+                
               </div>
             </div>
 
@@ -105,21 +116,24 @@
 </template>
   
   
-<script>
+<script lang="ts">
     import { routes } from 'vue-router/auto-routes'
+    import { addNewUser } from '@/models/users'
     export default {
     data() {
         return {
         name: '',
+        username: '',
         email: '',
-        phone: '',
+        profileImageUrl: '',
         password: '',
         confirmPassword: '',
         passwordError: '' // To store password mismatch error message
+        
         };
     },
     methods: {
-        submitForm() {
+        async submitForm() {
         // Check if passwords match
         if (this.password !== this.confirmPassword) {
             this.passwordError = 'Passwords do not match';
@@ -132,6 +146,19 @@
             console.log('Password:', this.password);
             // Add form submission logic here, e.g., send data to the backend
 
+            try{
+              const user = { name: this.name,  username: this.username, email: this.email,  profileImageUrl: this.profileImageUrl, password: this.password };
+              const response = await addNewUser(user);
+
+              if(!response.isSuccess){
+                this.passwordError = 'Failed to register';
+              }
+            }
+            catch(error){
+              this.passwordError = 'Failed to register';
+              console.error(error);
+            }
+            
             //redirect to login w/ sucess method\
             
             localStorage.setItem('newlySignedUpEmail', this.email);

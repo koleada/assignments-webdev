@@ -12,22 +12,38 @@
         <div class="stat">
           <p class="title is-5">{{ workout.duration }}</p>
           <p class="subtitle is-6">Duration</p>
-        </div>    
+        </div>  
+        <nav v-if="showDeleteButton" @click="editWorkout" class="level is-mobile">
+          <div class="level-right">
+            <button class="level-item button is-primary ">
+              <span class="icon is-medium">
+                <i class="far fa-edit" style="color: black!important;"></i>
+              </span>
+            </button>
+          </div>
+        </nav>  
       </div>
       <div class="media-content">
         <div class="content">
           
             
           <div id="top">
-            <div><strong>{{ user.name }}</strong> - <small>@{{ user.username }}</small></div>
+            <router-link :to="`/people/${user.userId}`" style="color: black;"><u><div><strong>{{ user.name }}</strong> - <small>@{{ user.username }}</small></div></u></router-link>
             <small>Location - {{ workout.location }}</small>
             <small>{{ new Date(workout.dateOfPosting).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) }}</small>
-            <button v-if="showDeleteButton" class="delete" @click="deleteWorkout" aria-label="close"></button>
+            <button v-if="showDeleteButton" class="delete" @click="deleteWorkout" aria-label="close" style="background-color: red!important;"></button>
+          </div>
+          <div id="type">
+            <p> 
+              <br>
+              Workout Type: {{ workout.type }}
+            </p>
           </div>
           <div id="descAndImg">
           <div id="description">
             <p> 
-              {{ workout.description }}
+              <br>
+              Description: {{ workout.description }}
               <br>
             </p>
           </div>
@@ -36,33 +52,14 @@
           </figure>
         </div>
         </div>
-        <nav class="level is-mobile">
-          <div class="level-left">
-            <a class="level-item" aria-label="reply">
-              <span class="icon is-small">
-                <i class="fas fa-reply" aria-hidden="true"></i>
-              </span>
-            </a>
-            <a class="level-item" aria-label="retweet">
-              <span class="icon is-small">
-                <i class="fas fa-retweet" aria-hidden="true"></i>
-              </span>
-            </a>
-            <a class="level-item" aria-label="like">
-              <span class="icon is-small">
-                <i class="fas fa-heart" aria-hidden="true"></i>
-              </span>
-            </a>
-          </div>
-        </nav>
       </div>
     </article>
-  </div>
+  </div>  
 </template>
 
 <script setup lang="ts">
     import type { Workout } from '@/models/workouts';
-    import { getUserById } from '@/models/users';
+    import { getFriendByUserId } from '@/models/users';
     import { ref, defineProps, defineEmits } from 'vue';
     
     const props = defineProps<{
@@ -70,18 +67,28 @@
         showDeleteButton: {
             type: boolean,
             default: false,
-        },
+        }, 
     }>()
 
     const w= ref(props.workout);
-    const user = getUserById(w.value.userId);
+    const user = ref<User>([]);
+    try {
+      getFriendByUserId(w.value.userId).then((data) => user.value = data.data);
+    } catch (error) {
+      console.log(error)
+    }
+    
 
     
-    const emit = defineEmits(["delete-workout"]);
+    const emit = defineEmits(["delete-workout", "edit-workout"]);
 
     const deleteWorkout = () => {
       emit("delete-workout", w.value.id);
     };
+
+    const editWorkout = () => {
+      emit("edit-workout", w.value);
+    }
     
 </script>
 
@@ -122,6 +129,7 @@
     .media-left{
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 2vh;
      }
      #descAndImg{

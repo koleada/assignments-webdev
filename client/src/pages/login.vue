@@ -7,6 +7,7 @@
         
         <div>
           <div id="error" class="subtitle is-5" v-if='errorMessage' style="color: red; font-size: 1rem;">{{ errorMessage }}</div>
+          <div id="successMessage"></div>
         </div>
         <!-- Login Box -->
         <div class="box" style="border: 2px solid #00d1b2; border-radius: 8px; padding: 2rem;">
@@ -22,7 +23,6 @@
                   type="email" 
                   placeholder="Enter your email" 
                   v-model="email" 
-                  
                   required>
                  
               </div>
@@ -66,7 +66,7 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import { login } from '@/models/users'
     
     export default {
@@ -79,33 +79,45 @@ import { login } from '@/models/users'
             };
         },
         methods: {
-            submitForm() {
-            // Add your form submission logic here
-            const user = login(this.email, this.password)
+          async submitForm() {
+            console.log(this.email, this.password)
+            try{
             
-            if(user){
-              localStorage.setItem('loggedInUserId', user.userId);
-              this.$router.push('/my-activity').then(() => {
-                window.location.reload();
-              });
+              const response = await login(this.email, this.password)
+              
+              if(response.isSuccess){
+                const user = response.data;
+                const token = response.token;
+                localStorage.setItem('loggedInUserId', user.userId);
+                localStorage.setItem('jwtToken', token);
+                localStorage.removeItem('newlySignedUpEmail');
+                localStorage.removeItem('sucess');
+                this.$router.push('/my-activity').then(() => {
+                  window.location.reload();
+                });
+              }
+              else{
+                this.errorMessage = 'Invalid email or password';
+              } 
+              
             }
-            else{
-              this.errorMessage = 'Invalid email or password';
+            catch(error){
+              console.error(error);
+              this.errorMessage = 'An error occurred. Please try again later.';
             }
-            localStorage.removeItem('email');
-            localStorage.removeItem('sucess');
-            }
+          }
         },
         mounted(){
             this.email = localStorage.getItem('newlySignedUpEmail') || '';
+            if (this.email) {
+              localStorage.removeItem('newlySignedUpEmail');
+            }
             let successCheck = localStorage.getItem('success');
             if(successCheck === 'true'){
                 document.getElementById('successMessage').innerHTML = 'Thanks for signing up, we look forward to helping you reach your fitness goals!';
                 localStorage.removeItem('success');
                 console.log(this.success);
-            }
-            
-            
+            } 
         },
         
         
