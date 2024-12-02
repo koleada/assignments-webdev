@@ -24,6 +24,7 @@ app.use(cors());
 const allowedOrigins = [
     "http://127.0.0.1:5173", // Local dev server
     "https://final-project-6uo1.onrender.com", // Render.com domain
+    "http://127.0.0.1:3000",
 ];
 
 const corsConfig = {

@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <div class="media" @click="navigateToProfile(user.userId)">
+        <div class="media">
             <div>
             <figure>
                 <div class="image is-64x64">
@@ -10,10 +10,12 @@
             </div>
 
             
-            <div >
-                <p class="title is-5">{{ user.name }}</p>
-                <p class="subtitle is-6">@{{ user.username }}</p>
-            </div>
+            <router-link :to="`/people/${user.userId}`" style="color: black;">
+                <div >
+                    <p class="title is-5">{{ user.name }}</p>
+                    <p class="subtitle is-6">@{{ user.username }}</p>
+                </div>
+            </router-link>
 
             
             <div>
@@ -59,9 +61,7 @@
         }
     };
 
-    function navigateToProfile(userId) {
-        window.location.href = `/people/${userId}`;
-    }
+    
 </script>
 
 <style scoped>
