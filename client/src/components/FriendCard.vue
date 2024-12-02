@@ -12,8 +12,8 @@
             
             <router-link :to="`/people/${user.userId}`" style="color: black;">
                 <div class="linkDiv">
-                    <u><p class="title is-5">{{ user.name }}</p></u>
-                    <u><p class="subtitle is-6">@{{ user.username }}</p></u>
+                    <p class="title is-5"><u>{{ user.name }}</u></p>
+                    <p class="subtitle is-6"><u>@{{ user.username }}</u></p>
                 </div>
             </router-link>
 
@@ -67,7 +67,6 @@
 <style scoped>
     .box{
         background-color: #8d9195;
-        cursor: pointer;
     }
     .media{
         display: flex;
