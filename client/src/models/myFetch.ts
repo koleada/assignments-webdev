@@ -1,6 +1,7 @@
 // this is the singular file that will be used to communicate with our backend server
 
-const API_URL = 'http://localhost:3000/api/v1/'
+const API_URL = 'https://final-project-6uo1.onrender.com/api/v1/'
+const DEV_API_URL = 'http://localhost:3000/api/v1/'
 
 //used if we want to fetch some data outside of our own api
 export function rest<T>(url: string, data?: any, method: string = 'GET', token?: string): Promise<T> {
