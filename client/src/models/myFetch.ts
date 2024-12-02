@@ -18,6 +18,7 @@ export function rest<T>(url: string, data?: any, method: string = 'GET', token?:
             'Content-Type': 'application/json',
         }
     }
+    
     return fetch(url, {
         // custom method if one is supplied, else if body data is specified without a method use POST else use GET
         method: method,
