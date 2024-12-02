@@ -11,9 +11,9 @@
 
             
             <router-link :to="`/people/${user.userId}`" style="color: black;">
-                <div >
-                    <p class="title is-5">{{ user.name }}</p>
-                    <p class="subtitle is-6">@{{ user.username }}</p>
+                <div class="linkDiv">
+                    <u><p class="title is-5">{{ user.name }}</p></u>
+                    <u><p class="subtitle is-6">@{{ user.username }}</p></u>
                 </div>
             </router-link>
 
@@ -73,5 +73,10 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+    .linkDiv{
+        cursor: pointer;
+        height: 100%;
+        width: 100%;
     }
 </style>
