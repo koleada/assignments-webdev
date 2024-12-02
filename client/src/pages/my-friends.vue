@@ -222,5 +222,9 @@
     }
     .content .friend{
         margin-bottom: 2rem;
+        width: 45vw;
+    }
+    .searchResults FriendCard {
+        max-width: 90%;
     }
 </style> 

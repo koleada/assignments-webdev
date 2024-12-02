@@ -207,7 +207,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 100%;
+        min-height: 100%;
         background-color: black;
         padding-top: 3rem;
     }
@@ -227,6 +227,7 @@
         background-color: black;
         padding: 4rem;
         border-radius: 0;
+        padding-bottom: 20vh;
     }
     h1{
         color: #00d1b2;
@@ -245,8 +246,5 @@
     }
     tbody .button:first-child {
         margin-right: .5rem;
-    }
-    #deleteUserModelBody{
-        
     }
 </style>

@@ -11,14 +11,8 @@ Origin: https://final-project-6uo1.onrender.com
 }
 
 ###
-POST https://final-project-6uo1.onrender.com/api/v1/users/login
-Content-Type: application/json
-Origin: https://final-project-6uo1.onrender.com
+GET https://final-project-6uo1.onrender.com/api/v1/workouts
 
-{
-    "email": "admin@admin.com",
-    "password": "admin"
-}
 
 ###
 POST http://localhost:3000/api/v1/friends/

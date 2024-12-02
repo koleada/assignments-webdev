@@ -66,7 +66,6 @@
 
 <style scoped>
     .box{
-        width: 40vw;
         background-color: #8d9195;
         cursor: pointer;
     }
