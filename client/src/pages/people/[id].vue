@@ -94,7 +94,7 @@
                 this.isFollowing = false
             }
         }
-        else{
+        else{ 
             this.showFollowButtons = false; 
         }
 
