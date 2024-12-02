@@ -5,7 +5,7 @@
                 <h1 class="title is-3" v-if="user != null">{{ user.name }}'s Profile</h1>
             </div>
 
-            <FriendCard v-if="user != null" :showFollowButtons="showFollowButtons" :user="user" :follow="!isFollowing" @unfollow="handleUnfollow" @follow="handleFollow"/>
+            <FriendCard class="friendCard" v-if="user != null" :showFollowButtons="showFollowButtons" :user="user" :follow="!isFollowing" @unfollow="handleUnfollow" @follow="handleFollow"/>
             
             <!-- Workouts -->
             <h2 class="title is-3">Workouts</h2>
@@ -127,5 +127,8 @@
     }
     .workouts .workoutCard {
         margin-bottom: 2vh;
+    }
+    .main .friendCard {
+        width: 40vw;
     }
 </style>
