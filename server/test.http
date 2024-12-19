@@ -11,7 +11,7 @@ Origin: https://final-project-6uo1.onrender.com
 }
 
 ###
-GET https://final-project-6uo1.onrender.com/api/v1/workouts
+GET http://localhost:3000/api/v1/workouts/
 
 
 ###

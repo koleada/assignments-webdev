@@ -24,6 +24,8 @@
           <button class="delete" aria-label="close" @click="isModalOpen = false"></button>
         </header>
 
+
+        <!-- AUTO COMPLETE FEATURE USED HERE -->
         <section class="modal-card-body">
           
             <div class="field">
@@ -34,11 +36,8 @@
                         type="text"
                         placeholder="Enter name or username"
                         v-model="searchQuery"
+                        @input="searchForFriends"
                     />
-                    
-                    <button class="button is-primary" @click="searchForFriends">
-                        Search
-                    </button>
                 </div>
             </div>
           
@@ -103,8 +102,11 @@
                     console.log('Error unfollowing friend');
                 }
             },
+            // AUTO COMPLETE FEATURE CODE
             async searchForFriends() {
-                if (!this.searchQuery.trim()) return;
+                if (!this.searchQuery.trim()) {
+                    return;
+                };
                 const userId = localStorage.getItem("loggedInUserId")
                 const token = localStorage.getItem("jwtToken") || ''
                 if (!token) {
